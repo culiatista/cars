@@ -2,23 +2,29 @@ class AuthService {
     constructor() {
         this.API_KEY = 'AIzaSyD0luD987fI34zh3rSryzcyMMdp8vJSjzY';
         this.SPREADSHEET_ID = '1yNrnQXk6wlhTXhMDBOFSSPK0Swuwb5MPcqLLB3K7fE0';
-        this.SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
+        this.SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
         this.CLIENT_ID = '1014678685453-d3ffs96fk3ncab2gdto4qhugmkh0jvr9.apps.googleusercontent.com';
     }
 
     async initializeGoogleAuth() {
         try {
+            // Load the auth2 library
+            await new Promise((resolve, reject) => {
+                gapi.load('client:auth2', resolve);
+            });
+
+            // Initialize the client
             await gapi.client.init({
                 apiKey: this.API_KEY,
                 clientId: this.CLIENT_ID,
                 discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
                 scope: this.SCOPES
             });
-            
-            // Load the auth2 library
-            await gapi.auth2.init({
-                client_id: this.CLIENT_ID
-            });
+
+            // Check if user is signed in
+            if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+                await gapi.auth2.getAuthInstance().signIn();
+            }
         } catch (error) {
             console.error('Error initializing Google API:', error);
             throw error;
