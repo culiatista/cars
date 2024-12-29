@@ -1,0 +1,102 @@
+"I am creating a web application for managing student anecdotal records with Google Sheets as the database. The app requires:
+
+Secure login and registration with encrypted passwords stored in Google Sheets.
+User roles with specific permissions:
+Admin: Manage user roles, access permissions, and view/edit/delete all records. Access the "logs" sheet for tracking all user activities.
+Principal: View all incidental and clinic records, access dashboards, charts, and activity logs from the "logs" sheet.
+Guidance: Add and view incidental reports about student behavior.
+Clinic: Add and view clinic records of students.
+Adviser: Add/view incidental reports and view clinic records.
+Teacher/Librarian: Add/view incidental reports only (cannot access clinic records).
+Admin and Principal can edit and delete records in the incidental and clinic reports.
+Maintain a daily count of records for Guidance and Clinic departments.
+Generate charts showing grade levels with the most records (accessible to Admin and Principal only).
+Use a "logs" sheet to track user activity logs, such as login/logout times, record additions/edits/deletions, and more. Only Admin and Principal can view this sheet.
+The app uses the Google Sheet with ID 1yNrnQXk6wlhTXhMDBOFSSPK0Swuwb5MPcqLLB3K7fE0 with the following sheets:
+"user"
+"incidental"
+"clinic"
+"logs"
+The sheets act as the primary database for storing user and record information.
+Please provide a secure implementation plan using Google Apps Script, JavaScript, and HTML/CSS for the frontend, ensuring role-based access and proper encryption techniques."
+
+Features Outline for the Project
+1. User Authentication
+Secure Registration:
+
+Store user credentials in the "user" sheet.
+Use encryption (e.g., Utilities.base64Encode in Apps Script or a JS library) to hash passwords.
+Validate unique email addresses during registration.
+Login System:
+
+Authenticate users by verifying their encrypted passwords.
+Dynamically grant access and permissions based on the user role.
+with change password features inside the logged user's dashboard
+2. Role-Based Access Control
+Admin:
+
+Full access to all records, charts, logs, and user management.
+Can create, update, or delete users and assign roles.
+Principal:
+
+View all incidental and clinic records.
+Access dashboards, charts, and activity logs in the "logs" sheet.
+Guidance:
+
+Add/view only incidental reports.
+Clinic:
+
+Add/view only clinic records.
+Adviser:
+
+Add/view incidental reports and view clinic records.
+Teacher/Librarian:
+
+Add/view incidental reports but cannot access clinic records.
+3. Logging System
+Logs Sheet:
+Columns: Timestamp | User ID | User Role | Action | Target Record (ID)
+Actions include:
+Login/logout
+Record added/edited/deleted
+User role updated
+Only accessible to Admin and Principal for monitoring activity.
+4. Record Management
+Incidental Records:
+
+Fields: ID	Date	Grade Level	Section	Student Name	Incidental Details	Incidental Discription	Action taken	Recommendation	Reported by.
+Editable by Admin, Principal, and the user who created the report.
+Clinic Records:
+
+Fields: ID	Date	Grade Level	Section	Student Name	Incidental Details	Incidental Discription	Action taken	Recommendation	Reported by.
+Editable by Admin, Principal, and the user who created the record.
+Permissions:
+
+Restrict access to records based on user roles.
+5. Dashboard and Reports
+Daily Counts:
+
+Display the number of records added to the Guidance and Clinic departments each day.
+Filter counts by department, date, and user role.
+Charts:
+
+Visualize grade levels with the most records in Guidance and Clinic.
+Use Google Charts or Chart.js for responsive design.
+Only Admin and Principal can access these visualizations.
+6. Google Sheets Structure
+"user" Sheet:
+
+Columns: ID | Email | Password (Encrypted) | Role | Date Created
+"incidental" Sheet:
+
+Columns: ID | Date | Grade Level | Section | Student Name | Incident Details | Reported By
+"clinic" Sheet:
+
+Columns: ID | Date | Grade Level | Section | Student Name | Diagnosis | Treatment Given | Reported By
+"logs" Sheet:
+
+Columns: Timestamp | User ID | User Role | Action | Target Record (ID)
+7. Security Measures
+Encrypt passwords before saving them in the "user" sheet.
+Use session-based authentication tokens to secure user sessions.
+Restrict access to certain sheets and features based on user roles.
